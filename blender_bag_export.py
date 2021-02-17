@@ -6,7 +6,6 @@ import cv2
 import rosbag
 import rospy
 from cv_bridge import CvBridge
-import yaml
 from sensor_msgs.msg import CameraInfo
 
 
@@ -30,10 +29,10 @@ if __name__ == "__main__":
     with open(args.calibration_file) as file:
         fx, fy, cx ,cy, w, h = file.readline().split(" ")
         ci.width, ci.height = int(w), int(h)
-        ci.K[0] = float(fx)
-        ci.K[4] = float(fy)
-        ci.K[2] = float(cx)
-        ci.K[5] = float(cy)
+        ci.P[0] = ci.K[0] = float(fx)
+        ci.P[5] = ci.K[4] = float(fy)
+        ci.P[2] = ci.K[2] = float(cx)
+        ci.P[6] = ci.K[5] = float(cy)
 
     bag = rosbag.Bag(args.bag_export, 'w')
 
