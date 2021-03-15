@@ -45,7 +45,6 @@ if __name__ == "__main__":
 
     for topic, message, timestamp in source_bag.read_messages(topics=topic_map.keys()):
         if message._type == "sensor_msgs/Image":
-            # print(message.encoding)
             img = cvbridge.imgmsg_to_cv2(message)
             # compress
             if topic==args.source_topic_colour_image:
@@ -57,6 +56,7 @@ if __name__ == "__main__":
                 tgt_msg = cvbridge.cv2_to_compressed_imgmsg(img, "png")
                 # https://github.com/ros-perception/vision_opencv/issues/250
                 tgt_msg.format = "16UC1; png compressed"
+            tgt_msg.header = message.header
         else:
             tgt_msg = message
 
